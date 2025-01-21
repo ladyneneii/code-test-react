@@ -10,6 +10,7 @@ const Card = ({
   text,
   videoLink,
   articleLink,
+  className
 }) => {
   const [isOpened, setisOpened] = useState(false);
 
@@ -80,7 +81,7 @@ const Card = ({
   };
 
   return (
-    <div className="launch__item launch__body">
+    <div className={`launch__item launch__body ${className}`}>
       <div className="launch__title-status">
         <h2>{title}</h2>
         <Status status={status} />

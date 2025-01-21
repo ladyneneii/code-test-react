@@ -9,11 +9,11 @@ const CardContainer = ({
   setIsLoading,
   // fetchData,
   // page,
-  // setPage, 
+  // setPage,
   data,
   setData,
 }) => {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const handleScroll = async (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
@@ -23,15 +23,15 @@ const CardContainer = ({
     if (bottom && !isLoading && data.length === 10) {
       setIsLoading(true);
       const newData = await fetchData(page);
-      setPage(page + 1)
-      setData(newData)
+      setPage(page + 1);
+      setData(newData);
       setIsLoading(false);
     }
   };
 
   return (
     <div className="launch__wrapper" onScroll={handleScroll}>
-      <div className="launch__list">
+      <div className="launch__list fade-enter-active">
         {filteredData
           // .sort((a, b) => new Date(b.isoDate) - new Date(a.isoDate))
           .map(

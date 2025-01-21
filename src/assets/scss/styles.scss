@@ -34,6 +34,7 @@ p {
   &-enter-active,
   &-leave-active {
     transition: opacity 500ms;
+    opacity: 1;
   }
 
   &-enter,
