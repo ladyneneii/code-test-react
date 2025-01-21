@@ -1,36 +1,39 @@
 import React, { useState } from "react";
 import Card from "../Card/Card";
 import Spinner from "../Spinner/Spinner";
+import { fetchData } from "../../App";
 
 const CardContainer = ({
-  data,
+  filteredData,
   isLoading,
   setIsLoading,
-  fetchData,
-  page,
+  // fetchData,
+  // page,
+  // setPage, 
+  data,
   setData,
 }) => {
-  const [scrollTimes, setScrollTimes] = useState(1);
+  const [page, setPage] = useState(1)
+
   const handleScroll = async (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
 
     const bottom = scrollHeight - scrollTop <= clientHeight + 50;
 
-    if (bottom && !isLoading && scrollTimes <= 10) {
-      console.log("Fetching more data...");
+    if (bottom && !isLoading && data.length === 10) {
       setIsLoading(true);
       const newData = await fetchData(page);
-      setData((prevData) => [...prevData, ...newData]);
+      setPage(page + 1)
+      setData(newData)
       setIsLoading(false);
-      setScrollTimes(scrollTimes + 1);
     }
   };
 
   return (
     <div className="launch__wrapper" onScroll={handleScroll}>
       <div className="launch__list">
-        {data
-          .sort((a, b) => new Date(b.isoDate) - new Date(a.isoDate))
+        {filteredData
+          // .sort((a, b) => new Date(b.isoDate) - new Date(a.isoDate))
           .map(
             ({
               id,
@@ -57,7 +60,7 @@ const CardContainer = ({
       </div>
       <div className="max-reached">
         {isLoading && <Spinner />}
-        {scrollTimes > 10 && "End of list."}
+        {data.length < 10 && "End of list."}
       </div>
     </div>
   );

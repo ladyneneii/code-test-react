@@ -6,7 +6,7 @@ import CardContainer from "./components/CardContainer/CardContainer";
 export const fetchData = async (page) => {
   try {
     const response = await fetch(
-      `https://api.spacexdata.com/v3/launches?limit=10&offset=${page * 10}`
+      `https://api.spacexdata.com/v3/launches?limit=10&offset=${page * 10}&sort=launch_date_utc&order=desc`
     );
     const launchData = await response.json();
 
@@ -34,21 +34,34 @@ export const fetchData = async (page) => {
 function App() {
   const [searchValue, setSearchValue] = useState("");
   const [data, setData] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(1);
 
+  // load first 10 data initially
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-      const fetchedData = await fetchData(page);
-      setData((prevData) => [...prevData, ...fetchedData]);
+      const fetchedData = await fetchData(0);
+      // setData((prevData) => [...prevData, ...fetchedData]);
+      // setPage(page + 1)
+      setData(fetchedData)
       setIsLoading(false);
     };
 
     loadData();
-  }, [page]);
+  }, []);
 
-  const filteredData = data.filter((card) =>
+  useEffect(() => {
+    // console.log(data);
+    setAllData((prevAllData) => [...prevAllData, ...data])
+  }, [data])
+
+  useEffect(() => {
+    // console.log(allData);
+  }, [allData])
+
+  const filteredData = allData.filter((card) =>
     card.title.toLowerCase().includes(searchValue.toLowerCase())
   );
 
@@ -57,11 +70,13 @@ function App() {
       <div className="launch main__wrapper">
         <Search value={searchValue} setValue={setSearchValue} />
         <CardContainer
-          data={filteredData}
+          filteredData={filteredData}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          fetchData={fetchData}
-          page={page}
+          // fetchData={fetchData}
+          // page={page}
+          // setPage={setPage}
+          data={data}
           setData={setData}
         />
       </div>
