@@ -114,7 +114,7 @@ const Card = ({
           </div>
           <div className="launch__details">
             {imgSrc ? (
-              <img className="logo" src={imgSrc} alt="" />
+              <img className="logo" src={imgSrc} width={100} height="auto" alt="" />
             ) : (
               <p className="no-content">No image yet.</p>
             )}
